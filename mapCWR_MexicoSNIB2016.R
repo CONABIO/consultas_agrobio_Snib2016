@@ -15,7 +15,13 @@ forestales<- c("Pinaceae", "Burseraceae", "Cupressaceae", "Rutaceae")
 df<- filter(df, !(familia %in% forestales)) # filter forestales from data
 otrosquitar<-c("Euphorbia", "Dioscorea", "Castilla", "Dahlia", "Lophophora", "Nicotiana", "Tagetes")
 df<-filter(df, !(genero %in% otrosquitar))
+df<-filter(df, !(genero =="Dysphania")) # delete because there are no entries, changed to Chenopodium
 df<-droplevels(df)
+
+## Maices nativos
+maizedb<-read.delim("BaseMaicesNativos.txt")
+teodb<-read.delim("BaseMaicesNativos-teocintles.txt")
+tripdb<-read.delim("BaseMaicesNativos-Tripsacum.txt")
 
 # map
 cont<-readShapePoly("conto4mgw/conto4mgw.shp")
@@ -74,9 +80,9 @@ p + theme(legend.position="none") +
 levels(df$genero)
 
 # Keep only main milpa species by filtering frutales and cactus
-milperas<-filter(df, !(genero %in% c("Anacardium", "Ananas", "Annona", "Arachis", "Bixa", "Brosimum", "Byrsonima", "Carica", "Chamaedorea", "Crataegus", "Diospyros", "Escontria", "Gossypium", "Helianthus", "Hylocereus", "Lemaireocereus", "Lophocereus", "Myrtillocactus", "Neobuxbaumia", "Nopalea", 
+milperas<-filter(df, !(genero %in% c("Anacardium", "Ananas", "Annona", "Arachis", "Bixa", "Brosimum", "Byrsonima", "Carica", "Chamaedorea", "Crescentia", "Crataegus", "Diospyros", "Escontria", "Gossypium", "Helianthus", "Hylocereus", "Lemaireocereus", "Lophocereus", "Myrtillocactus", "Neobuxbaumia", "Nopalea", 
                                      "Manilkara", "Pachycereus", "Parmentiera", "Polaskia", "Pouteria", "Prunus", "Psidium")))
-milperas<-filter(milperas, !(genero =="Dysphenia")) # delete because there are no entries
+
 milperas<-droplevels(milperas)
 levels(milperas$genero)
 
@@ -91,3 +97,20 @@ p + theme(legend.position="none") +
   theme(axis.text.x = element_text(angle = 45, hjust = 1, face="italic", size=8)) +
   ylab("Número de Registros") + xlab("Género")
 
+## Plot with common names:
+# add generic common names
+nomgenerico<-milperas$genero
+levels(nomgenerico)<-c("Agaves y magueyes", "Amarantos", "Quelites (alaches)", "Frijol canavalia", "Chiles", "Quelites y epazote", "Chaya", "Quelites (chepiles)", "Calabazas", "Chía gorda", "Camote", "Jaltomate", "Quelite (lentejilla)", "Jitomate", "Yucas", "Nopales y tunas", "Jícama", "Aguacates", "Frijoles", "Tomates", "Hoja Santa", "Quelites (pápalo)", "Verdolaga", "Quelite (lengua de vaca)", "Chía")
+milperas<-cbind(milperas, nomgenerico)
+
+  
+# Plot  
+# Plot
+p<-ggplot(milperas, aes(x=nomgenerico, fill=familia, group=familia)) +
+  geom_bar(stat="count") + scale_fill_manual(values=cols) + 
+  facet_grid(. ~ familia, scales="free_x", space="free_x") 
+
+p + theme(legend.position="none") + 
+  theme(strip.text.x =element_text(angle=90)) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, face="italic", size=8)) +
+  ylab("Número de Registros") + xlab("Nombre común (por género)")
