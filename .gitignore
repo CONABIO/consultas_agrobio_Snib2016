@@ -45,3 +45,20 @@ $RECYCLE.BIN/
 Network Trash Folder
 Temporary Items
 .apdisk
+*.dbf
+conto4mgw/conto4mgw.prj
+*.shp
+conto4mgw/conto4mgw.shx
+*.xml
+GenbyFam.pdf
+*.sbn
+generos_de_interes_inf_adicional.sbx
+*.shx
+generos_de_interes_inf_adicional.txt
+*.png
+MapbyFam.pdf
+*.xlsx
+old_version/generos_de_interes_clip.cpg
+*.sbx
+old_version/generos_de_interes_clip.txt
+*.cpg
